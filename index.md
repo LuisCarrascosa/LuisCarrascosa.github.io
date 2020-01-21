@@ -1,1 +1,7 @@
-I love :coffee:
+```javascript
+function fancyAlert(arg) {
+  if(arg) {
+    $.facebox({div:'#foo'})
+  }
+}
+```
