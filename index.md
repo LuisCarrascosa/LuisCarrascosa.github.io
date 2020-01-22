@@ -30,7 +30,7 @@ The dataset used for this project comes from Insideairbnb.com. The dataset was s
 
 I will not import free text fields and I will remove the currency symbol from fields with amounts. "smart_location", "zipcode" are redundant having latitude and longitude. "reviews_per_month", "number_of_reviews_ltm" with "number_of_reviews" too. url fields does not add value to the model. I don't import "host_name", "host_location" and "host_about" too.
 
-```
+```python
 datasetDir = "/home/luis/datasets/MadridAirbnbData"
 locale.setlocale(locale.LC_ALL, 'en_US.UTF8') 
 conv = locale.localeconv()
@@ -56,5 +56,244 @@ df = pd.read_csv(
     ]
 )
 ```
-![Image](images/fig1.jpg)
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>experiences_offered</th>
+      <th>host_since</th>
+      <th>host_response_time</th>
+      <th>host_response_rate</th>
+      <th>host_acceptance_rate</th>
+      <th>host_is_superhost</th>
+      <th>host_listings_count</th>
+      <th>host_total_listings_count</th>
+      <th>host_has_profile_pic</th>
+      <th>host_identity_verified</th>
+      <th>...</th>
+      <th>jurisdiction_names</th>
+      <th>instant_bookable</th>
+      <th>is_business_travel_ready</th>
+      <th>cancellation_policy</th>
+      <th>require_guest_profile_picture</th>
+      <th>require_guest_phone_verification</th>
+      <th>calculated_host_listings_count</th>
+      <th>calculated_host_listings_count_entire_homes</th>
+      <th>calculated_host_listings_count_private_rooms</th>
+      <th>calculated_host_listings_count_shared_rooms</th>
+    </tr>
+    <tr>
+      <th>id</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6369</th>
+      <td>none</td>
+      <td>2009-04-16</td>
+      <td>within a few hours</td>
+      <td>100%</td>
+      <td>NaN</td>
+      <td>f</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>t</td>
+      <td>f</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>f</td>
+      <td>f</td>
+      <td>flexible</td>
+      <td>f</td>
+      <td>f</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>21853</th>
+      <td>none</td>
+      <td>2010-02-21</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>f</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>t</td>
+      <td>t</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>f</td>
+      <td>f</td>
+      <td>strict_14_with_grace_period</td>
+      <td>f</td>
+      <td>f</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>23001</th>
+      <td>none</td>
+      <td>2010-02-17</td>
+      <td>within an hour</td>
+      <td>100%</td>
+      <td>NaN</td>
+      <td>f</td>
+      <td>9.0</td>
+      <td>9.0</td>
+      <td>t</td>
+      <td>f</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>f</td>
+      <td>f</td>
+      <td>moderate</td>
+      <td>f</td>
+      <td>f</td>
+      <td>5</td>
+      <td>5</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 74 columns</p>
+</div>
+
+
+
+### Cleaning the features
+
+I will drop columns with more than 85% nulls
+
+
+```python
+cols_to_drop = set(df.columns[df.isna().mean()>0.85])
+print(cols_to_drop)
+```
+
+    {'host_acceptance_rate', 'monthly_price', 'square_feet', 'weekly_price', 'jurisdiction_names'}
+
+
+
+```python
+df.drop(cols_to_drop, axis='columns', inplace=True)
+```
+
+We only use latitude, longitude and neighbourhood_cleansed location. As we are studying Madrid, the city and country columns do not contribute anything
+
+
+```python
+df_gps = df[['latitude', 'longitude']]
+df_gps.head()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>latitude</th>
+      <th>longitude</th>
+    </tr>
+    <tr>
+      <th>id</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6369</th>
+      <td>40.45628</td>
+      <td>-3.67763</td>
+    </tr>
+    <tr>
+      <th>21853</th>
+      <td>40.40341</td>
+      <td>-3.74084</td>
+    </tr>
+    <tr>
+      <th>23001</th>
+      <td>40.38695</td>
+      <td>-3.69304</td>
+    </tr>
+    <tr>
+      <th>24805</th>
+      <td>40.42202</td>
+      <td>-3.70395</td>
+    </tr>
+    <tr>
+      <th>24836</th>
+      <td>40.41995</td>
+      <td>-3.69764</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+df.drop(
+    ['neighbourhood', 'neighbourhood_group_cleansed', 'street', 'city', 'state', 'country', 
+     'country_code', 'is_location_exact', 'latitude', 'longitude']
+    , axis='columns', inplace=True
+)
+```
