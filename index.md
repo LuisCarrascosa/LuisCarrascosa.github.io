@@ -22,11 +22,37 @@ The data will be processed to clean them and get as much information as possible
 * Influence of host features in the median price
 
 ## Processing the data
-<p align="center">
 ![Image](images/blur-business-coffee-commerce-273222.jpg)
-</p>
 ### Import the data
-
 The dataset used for this project comes from Insideairbnb.com. The dataset was scraped on 2019-11-09 and contains information on all Madrid Airbnb listings that were live on the site on that date (20.539)
 
-I will not import free text fields and I will remove the currency symbol from fields with amounts. "smart_location", "zipcode" are redundant having latitude and longitude. "reviews_per_month", "number_of_reviews_ltm" with "number_of_reviews" too. url fields does not add value to the model. I don't import "host_name", "host_location" and "host_about" too
+I will not import free text fields and I will remove the currency symbol from fields with amounts. "smart_location", "zipcode" are redundant having latitude and longitude. "reviews_per_month", "number_of_reviews_ltm" with "number_of_reviews" too. url fields does not add value to the model. I don't import "host_name", "host_location" and "host_about" too.
+
+```
+datasetDir = "/home/luis/datasets/MadridAirbnbData"
+locale.setlocale(locale.LC_ALL, 'en_US.UTF8') 
+conv = locale.localeconv()
+fconv_prices = lambda x : locale.atof(x.strip(conv['currency_symbol'])) if x else np.nan 
+
+def fdate_parser(x, dtime_format = "%d-%m-%Y"):
+    return datetime.strptime(x, dtime_format) 
+    
+df = pd.read_csv(
+    f'{datasetDir}/listings_detailed.csv', sep = ',', index_col = 'id', 
+    converters = {
+        'price': fconv_prices, 'weekly_price': fconv_prices, 'monthly_price': fconv_prices, 'security_deposit': fconv_prices,
+        'cleaning_fee': fconv_prices, 'extra_people': fconv_prices
+    },
+    parse_dates = ['first_review', 'last_review', 'host_since'],
+    usecols = lambda column : column not in [
+        'zipcode', 'scrape_id', 'last_scraped', 'name', 'summary', 'space', 'description', 
+        'neighborhood_overview', 'notes', 'transit', 'access', 'interaction', 'house_rules', 
+        'thumbnail_url', 'medium_url', 'picture_url', 'xl_picture_url', 'host_url', 'host_name', 
+        'host_location', 'host_about', 'host_thumbnail_url', 'host_picture_url', 'host_neighbourhood', 
+        'host_verifications', 'calendar_last_scraped', 'listing_url', 'smart_location',
+        'reviews_per_month', 'number_of_reviews_ltm', 'host_id'
+    ]
+)
+```
+dd
+
