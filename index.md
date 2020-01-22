@@ -229,19 +229,21 @@ moderate: 6045
 
 **first_review:** there are 15.9% of ads without review. We add a new column "B_time_since_first_review" that we will group in 5 categories:
 
-> 0-6 months: 3652<br>
-6-12 months: 2231<br>
-1-2 years: 3667<br>
-2+ years: 6804<br>
-no reviews: 3086
+<pre>
+0-6 months     3652
+6-12 months    2231
+1-2 years      3667
+2+ years       6804
+no reviews     3086
+</pre>
 
 **last_review:** we add a new column "B_time_since_last_review" that we will group in 5 categories:
 
-> 0-2 weeks     5758<br>
-2-8 weeks     5199<br>
-2-6 months    2500<br>
-6+ months     2897<br>
-no reviews    3086
+<pre>0-2 weeks     5758
+2-8 weeks     5199
+2-6 months    2500
+6+ months     2897
+no reviews    3086</pre>
 
 **amenities:** additional features in the property, e.g. whether it has a TV or parking. This data is a list and we need to **extract a list of all posibles amenities**
 
@@ -288,3 +290,25 @@ B_amenities_self_check: Keypad / 24-hour check-in / Self check-in / Smart lock<b
 B_amenities_suitable_events: Suitable for events<br>
 B_amenities_long_term: Long term stays allowed)'
 
+We will build a dataframe with the groups of defined things that we will add to obtain the totals (%) of each group
+
+<pre>B_amenities_pets                     14.88
+B_amenities_outdoor                  15.28
+B_amenities_family_friendly          39.74
+B_amenities_normal_electronics       79.95
+B_amenities_special_accessibility    21.90
+B_amenities_breakfast_appliances     41.92
+B_amenities_bedroom_basics           85.70
+B_amenities_security                 16.91
+B_amenities_smoking                  20.98
+B_amenities_proximity_host           35.32
+B_amenities_general_accesibility     61.44
+B_amenities_free_parking             16.25
+B_amenities_paid_parking             31.90
+B_amenities_air_conditioning         63.65
+B_amenities_privacy                  21.67
+B_amenities_safety                   45.11
+B_amenities_luggage                  19.00
+B_amenities_breakfast                11.88
+B_amenities_self_check               14.77
+B_amenities_long_term                29.51</pre>
