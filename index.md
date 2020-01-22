@@ -30,31 +30,119 @@ The dataset used for this project comes from Insideairbnb.com. The dataset was s
 
 I will not import free text fields and I will remove the currency symbol from fields with amounts. "smart_location", "zipcode" are redundant having latitude and longitude. "reviews_per_month", "number_of_reviews_ltm" with "number_of_reviews" too. url fields does not add value to the model. I don't import "host_name", "host_location" and "host_about" too.
 
-```python
-datasetDir = "/home/luis/datasets/MadridAirbnbData"
-locale.setlocale(locale.LC_ALL, 'en_US.UTF8') 
-conv = locale.localeconv()
-fconv_prices = lambda x : locale.atof(x.strip(conv['currency_symbol'])) if x else np.nan 
-
-def fdate_parser(x, dtime_format = "%d-%m-%Y"):
-    return datetime.strptime(x, dtime_format) 
-    
-df = pd.read_csv(
-    f'{datasetDir}/listings_detailed.csv', sep = ',', index_col = 'id', 
-    converters = {
-        'price': fconv_prices, 'weekly_price': fconv_prices, 'monthly_price': fconv_prices, 'security_deposit': fconv_prices,
-        'cleaning_fee': fconv_prices, 'extra_people': fconv_prices
-    },
-    parse_dates = ['first_review', 'last_review', 'host_since'],
-    usecols = lambda column : column not in [
-        'zipcode', 'scrape_id', 'last_scraped', 'name', 'summary', 'space', 'description', 
-        'neighborhood_overview', 'notes', 'transit', 'access', 'interaction', 'house_rules', 
-        'thumbnail_url', 'medium_url', 'picture_url', 'xl_picture_url', 'host_url', 'host_name', 
-        'host_location', 'host_about', 'host_thumbnail_url', 'host_picture_url', 'host_neighbourhood', 
-        'host_verifications', 'calendar_last_scraped', 'listing_url', 'smart_location',
-        'reviews_per_month', 'number_of_reviews_ltm', 'host_id'
-    ]
-)
-df.head(3)
-```
 ![Image](images/fig1.jpg)
+
+### Cleaning the features
+
+I will drop columns with more than 85% nulls: ['host_acceptance_rate', 'square_feet', 'monthly_price', 'jurisdiction_names', 'weekly_price']
+
+We only use latitude, longitude and neighbourhood_cleansed location. As we are studying Madrid, the city and country columns do not contribute anything
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>id</th>
+      <th>latitude</th>
+      <th>longitude</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6369</th>
+      <td>40.45628</td>
+      <td>-3.67763</td>
+    </tr>
+    <tr>
+      <th>21853</th>
+      <td>40.40341</td>
+      <td>-3.74084</td>
+    </tr>
+    <tr>
+      <th>23001</th>
+      <td>40.38695</td>
+      <td>-3.69304</td>
+    </tr>
+    <tr>
+      <th>24805</th>
+      <td>40.42202</td>
+      <td>-3.70395</td>
+    </tr>
+    <tr>
+      <th>24836</th>
+      <td>40.41995</td>
+      <td>-3.69764</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+For the number of nights we will only leave "minimum_nights" and "maximum_nights". We will change the price column for the price per guest
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>id</th>
+      <th>B_price_guests</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6369</th>
+      <td>35.00</td>
+    </tr>
+    <tr>
+      <th>21853</th>
+      <td>17.00</td>
+    </tr>
+    <tr>
+      <th>23001</th>
+      <td>60.00</td>
+    </tr>
+    <tr>
+      <th>24805</th>
+      <td>40.00</td>
+    </tr>
+    <tr>
+      <th>24836</th>
+      <td>28.75</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+We'll eliminate prices per guest above quantile 95. Thus we will eliminate possible artificially high prices due to the effect of smart pricing
+
+![Image](images/outliers.png)
+
+Thus we eliminate prices per guest that exceed 5000 and even reach 9000 dollars. Let's compare prices per guest in both dataset
+
+![Image](images/price_dist.png)
+
