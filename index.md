@@ -1,5 +1,6 @@
 # Analysing Madrid Airbnb data using Plotly, Mapbox and Geopandas
 ![Image](images/airbnb-2384737_1280.jpg)
+
 ## Introduction
 Airbnb is the world’s biggest accommodation-sharing site. Its rapid growth and impact on vacation rentals has generated heated discussions about its effect in several of the world's largest cities. So much that regulations have emerged against the free use of this website:
 
@@ -23,6 +24,7 @@ The data will be processed to clean them and get as much information as possible
 
 ## Processing the data
 ![Image](images/blur-business-coffee-commerce-273222.jpg)
+
 ### Import the data
 The dataset used for this project comes from Insideairbnb.com. The dataset was scraped on 2019-11-09 and contains information on all Madrid Airbnb listings that were live on the site on that date (20.539)
 
