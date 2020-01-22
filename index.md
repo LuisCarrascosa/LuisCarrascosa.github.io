@@ -159,10 +159,91 @@ We review the categorical and datetime variables one by one
  'bed_type', 'amenities', 'calendar_updated', 'first_review', 'last_review', 'license', 'instant_bookable', 'cancellation_policy']
 
 **experiences_offered:** we erase it because there is only one value
+
 **host_since:** date that the host first joined Airbnb. We will calculate the difference of days and replace the nulls with the median
 
-host_response_time - average amount of time the host takes to reply to messages
-There is some possible values and nans. This nans we will impute these to a new value: unknown
+**host_response_time:** average amount of time the host takes to reply to messages. There is some possible values and nans. This nans we will impute these to a new value: unknown
+> within an hour        11625<br>
+unknown                3498<br>
+within a few hours     2539<br>
+within a day           1382<br>
+a few days or more      408
 
+**host_response_rate:** analogous case but for which we will group in a categorical variable: "unknown", [0-49%], [50-89%], [90-99%] y 100%
+> 100%       10906<br>
+90-99%      2310<br>
+50-89%      2172<br>
+0-49%        566<br>
+unknown     3498
+
+**host_is_superhost:** whether or not the host is a superhost, which is a mark of quality for the top-rated and most experienced hosts. There are only 12 nans. We will review the rest of columns "host_"
+
+![Image](images/table2.png)
+
+"host_is_superhost", "host_listings_count" and "host_identity_verified" has the same nulls. We drop these listings
+
+**host_identity_verified:** whether or not the host has been verified with id. There are no nulls
+
+> f: 13179<br>
+t: 6261
+
+**neighbourhood_cleansed:** There are no nulls
+
+**market:** virtually there is only significant value. We eliminate it
+
+> Madrid: 19406<br>
+Other (International): 4<br>
+Other (Domestic): 1
+
+**property_type:** there are too much property types. We will group them into 3 categories: house, apartment and others.
+
+>Apartment: 17909<br>
+House: 1113<br>
+Other: 418
+
+**room_type:** we will group 'Hotel room' into 'Private room'
+
+> Entire home/apt: 12078<br>
+Private room: 7134<br>
+Shared room: 228
+
+**bed_type:** this feature is "Real Bed" in the 99% os dataset. We drop this column
+
+**calendar_updated:** This feature does not add value to the model. Dropped
+
+**license:** it's a license granted by the Community of Madrid. The majority (81%) is null. It's a free text column but we can group them in "t" (has license) and "f" for nans values
+
+> f: 15778<br>
+t: 3662<br>
+
+**instant_bookable:** whether or not the property can be instant booked. It has no null values
+
+> t: 11564<br>
+f: 7876
+
+**cancellation_policy:** whether or not the property can be instant booked. It has no null values but we need to regroup categories
+
+> strict_14_with_grace_period: 7243<br>
+flexible: 6152<br>
+moderate: 6045
+
+**first_review:** there are 15.9% of ads without review. We add a new column "B_time_since_first_review" that we will group in 5 categories:
+
+> 0-6 months: 3652<br>
+6-12 months: 2231<br>
+1-2 years: 3667<br>
+2+ years: 6804<br>
+no reviews: 3086
+
+**last_review:** we add a new column "B_time_since_last_review" that we will group in 5 categories:
+
+> 0-2 weeks     5758<br>
+2-8 weeks     5199<br>
+2-6 months    2500<br>
+6+ months     2897<br>
+no reviews    3086
+
+**amenities:** additional features in the property, e.g. whether it has a TV or parking. This data is a list and we need to **extract a list of all posibles amenities**
 
 ![Image](images/categorias1.png)
+
