@@ -146,3 +146,23 @@ Thus we eliminate prices per guest that exceed 5000 and even reach 9000 dollars.
 
 ![Image](images/price_dist.png)
 
+We don't lose the two concentrations near the ids 20M and 35M. Now, let's represent each column to review them.
+
+![Image](images/histograms.png)
+
+Columns with only one category will be deleted: 
+> ['has_availability', 'host_has_profile_pic', 'is_business_travel_ready' ,'require_guest_phone_verification', 'require_guest_profile_picture', 'requires_license']
+
+### Categorical features
+We review the categorical and datetime variables one by one
+> ['experiences_offered', 'host_since', 'host_response_time', 'host_response_rate', 'host_is_superhost', 'host_identity_verified', 'neighbourhood_cleansed', 'market', 'property_type', 'room_type',
+ 'bed_type', 'amenities', 'calendar_updated', 'first_review', 'last_review', 'license', 'instant_bookable', 'cancellation_policy']
+
+**experiences_offered:** we erase it because there is only one value
+**host_since:** date that the host first joined Airbnb. We will calculate the difference of days and replace the nulls with the median
+
+host_response_time - average amount of time the host takes to reply to messages
+There is some possible values and nans. This nans we will impute these to a new value: unknown
+
+
+![Image](images/categorias1.png)
