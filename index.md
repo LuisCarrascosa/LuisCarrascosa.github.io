@@ -19,4 +19,4 @@ Which areas have the most Airbnb properties, and which are the most expensive?
 Which amenities increase the price of an Airbnb listing?
 Influence of host features
 
-![Image](https://www.factufacil.es/wp-content/uploads/2018/12/descargar-factura-de-airbnb.jpg)
+![Image](https://cdn.pixabay.com/photo/2017/06/08/20/11/airbnb-2384737_960_720.jpg)
