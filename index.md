@@ -1,4 +1,4 @@
-# Analysing Madrid Airbnb data using Plotly, Geopandas and Pandas
+# Analysing Madrid Airbnb data using Plotly, Mapbox and Geopandas
 ![Image](https://cdn.pixabay.com/photo/2017/06/08/20/11/airbnb-2384737_960_720.jpg)
 ## Introduction
 Airbnb is the world’s biggest accommodation-sharing site. Its rapid growth and impact on vacation rentals has generated heated discussions about its effect in several of the world's largest cities. So much that regulations have emerged against the free use of this website:
@@ -15,9 +15,15 @@ Airbnb is the world’s biggest accommodation-sharing site. Its rapid growth and
 * Tokyo: home sharing was legalized only in 2017 and is limited to 180 days a year
 <div style="text-align: right"><i>Source: https://www.bbc.com/mundo/noticias-45355426</i></div>
 Given the [Airbnb dataset of Madrid](http://insideairbnb.com/get-the-data.html), we propose to obtain the following information:
-
+## Objectives
+The data will be processed to clean them and get as much information as possible. A statistical analysis will attempt to solve the following questions:
 * Which areas have the most Airbnb properties, and which are the most expensive?
 * Which amenities increase the price of an Airbnb listing?
-* Influence of host features
+* Influence of host features in the median price
 
+## Processing the data
+### Import the data
 
+The dataset used for this project comes from Insideairbnb.com. The dataset was scraped on 2019-11-09 and contains information on all Madrid Airbnb listings that were live on the site on that date (20.539)
+
+I will not import free text fields and I will remove the currency symbol from fields with amounts. "smart_location", "zipcode" are redundant having latitude and longitude. "reviews_per_month", "number_of_reviews_ltm" with "number_of_reviews" too. url fields does not add value to the model. I don't import "host_name", "host_location" and "host_about" too
