@@ -56,5 +56,5 @@ df = pd.read_csv(
     ]
 )
 ```
-dd
+![Image](images/fig1.jpg)
 
