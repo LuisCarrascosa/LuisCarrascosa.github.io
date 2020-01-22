@@ -247,3 +247,44 @@ no reviews    3086
 
 ![Image](images/categorias1.png)
 
+I define the following groupings of amenities:
+ > B_amenities_pets: Pets allowed / Other pet / Dog / Cat / Pets live on this property<br>
+B_amenities_kitchen: Kitchen / Kitchenette / Full kitchen<br>
+B_amenities_high_kitchen: Warming drawer / Wine cooler / Steam oven / Double oven<br>
+B_amenities_high_bedroom: Firm mattress / Memory foam mattress / Pillow-top mattress<br>
+B_amenities_outdoor: BBQ grill / Terrace / Outdoor seating / Patio or balcony / Hammock / Garden or backyard / Balcony / Sun loungers<br>
+B_amenities_family_friendly: Family\/kid friendly / Changing table / Baby bath / Crib / Children’s books and toys / Pack ’n Play\/travel crib / Fireplace guards / Babysitter recommendations / Window guards / Children’s dinnerware / Stair gates / Table corner guards / Outlet covers / Baby monitor / High chair<br>
+B_amenities_home_appliances: Washer \/ Dryer / Refrigerator / Mini fridge / Gas oven / Cooking basics / Dryer / Convection oven / Microwave / Washer / Oven / Dishes and silverware / Iron / Dishwasher<br>
+B_amenities_high_electronics: HBO GO / Smart TV / Netflix / Projector and screen / Game console / Amazon Echo<br>
+B_amenities_normal_electronics: DVD player / Printer / TV / Cable TV / Sound system / High-resolution computer monitor<br>
+B_amenities_special_accessibility: Fixed grab bars for shower / Accessible-height bed / Extra space around bed / Pool with pool hoist / Electric profiling bed / Accessible-height toilet / Wide doorway to guest bathroom / Ground floor access / Single level home / Wheelchair accessible / Disabled parking spot / Shower chair / No stairs or steps to enter / Step-free shower / Bathtub with bath chair / Wide entrance / Fixed grab bars for toilet / Wide entrance for guests / Flat path to guest entrance / Mobile hoist / Wide clearance to shower / Wide hallways / Wide entryway<br>
+B_amenities_breakfast_appliances: Espresso machine / Hot water kettle / Coffee maker<br>
+B_amenities_gym: Gym / Exercise equipment<br>
+B_amenities_pool: Shared pool / Pool<br>
+B_amenities_heating: Heated towel rack / Heating / Heated floors / Stove<br>
+B_amenities_other: Other / Essentials / Breakfast table / Beach essentials / Buzzer\/wireless intercom / Formal dining area / Ceiling fan / Day bed / Room-darkening shades / Laptop friendly workspace / Standing valet<br>
+B_amenities_views: Beach view / Ski-in/Ski-out / Waterfront / Beachfront / Beachfront<br>
+B_amenities_internet: Ethernet connection / Wifi / Pocket wifi / Internet<br>
+B_amenities_bathroom_basics: Hot water / Walk-in shower / Bathtu / Soaking tub / Handheld shower head / Bath towel / Bidet / Shampoo / Rain shower / Body soap / toilet / Bathroom essentials / Toilet paper / Hair dryer<br>
+B_amenities_cleaning_before_checkout: Cleaning before checkout<br>
+B_amenities_bedroom_basics: Bedroom comforts / Extra pillows and blankets / Bed linens / Hangers<br>
+B_amenities_security: Lockbox / Lock on bedroom door<br>
+B_amenities_indoor_fireplace: Indoor fireplace<br>
+B_amenities_staff: Building staff / Doorman<br>
+B_amenities_smoking: Smoking allowed<br>
+B_amenities_high_bathroom: Jetted tub / Touchless faucets / Hot tub<br>
+B_amenities_cleaning_before_checkout: Cleaning before checkout<br>    
+B_amenities_proximity_host: Host greets you<br>
+B_amenities_general_accesibility: Well-lit path to entrance / Elevator<br>
+B_amenities_free_parking: Free street parking / Free parking on premises<br>  
+B_amenities_paid_parking: Paid parking on premises / Paid parking off premises<br>
+B_amenities_air_conditioning: Central air conditioning / Air conditioning<br>
+B_amenities_privacy: Private living room / Private bathroom / Private entrance / En suite bathroom<br>
+B_amenities_safety: Fire extinguisher / Carbon monoxide detector / Smoke detector / Safety card / First aid kit<br>
+B_amenities_luggage: Mudroom / Luggage dropoff allowed<br>    
+B_amenities_ev_charger: EV charger<br>     
+B_amenities_breakfast: Breakfast<br>
+B_amenities_self_check: Keypad / 24-hour check-in / Self check-in / Smart lock<br>    
+B_amenities_suitable_events: Suitable for events<br>
+B_amenities_long_term: Long term stays allowed)'
+
