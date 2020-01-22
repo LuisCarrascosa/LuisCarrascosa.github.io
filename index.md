@@ -22,7 +22,9 @@ The data will be processed to clean them and get as much information as possible
 * Influence of host features in the median price
 
 ## Processing the data
+<p align="center">
 ![Image](images/blur-business-coffee-commerce-273222.jpg)
+</p>
 ### Import the data
 
 The dataset used for this project comes from Insideairbnb.com. The dataset was scraped on 2019-11-09 and contains information on all Madrid Airbnb listings that were live on the site on that date (20.539)
