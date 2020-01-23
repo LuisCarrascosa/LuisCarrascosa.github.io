@@ -312,3 +312,447 @@ B_amenities_luggage                  19.00
 B_amenities_breakfast                11.88
 B_amenities_self_check               14.77
 B_amenities_long_term                29.51</pre>
+
+We will remove those that offer more than 90% of ads and those that are below 10%
+
+> high_frequent_cols: ['B_amenities_kitchen', 'B_amenities_home_appliances', 'B_amenities_heating', 'B_amenities_other', 'B_amenities_internet', 'B_amenities_bathroom_basics']
+
+> low_frequent_cols: ['B_amenities_high_kitchen', 'B_amenities_high_bedroom', 'B_amenities_high_electronics', 'B_amenities_gym', 'B_amenities_pool', 'B_amenities_views', 'B_amenities_cleaning_before_checkout', 'B_amenities_indoor_fireplace', 'B_amenities_staff', 'B_amenities_high_bathroom', 'B_amenities_ev_charger', 'B_amenities_suitable_events']
+
+<pre>B_amenities_pets                     14.88
+B_amenities_outdoor                  15.28
+B_amenities_family_friendly          39.74
+B_amenities_normal_electronics       79.95
+B_amenities_special_accessibility    21.90
+B_amenities_breakfast_appliances     41.92
+B_amenities_bedroom_basics           85.70
+B_amenities_security                 16.91
+B_amenities_smoking                  20.98
+B_amenities_proximity_host           35.32
+B_amenities_general_accesibility     61.44
+B_amenities_free_parking             16.25
+B_amenities_paid_parking             31.90
+B_amenities_air_conditioning         63.65
+B_amenities_privacy                  21.67
+B_amenities_safety                   45.11
+B_amenities_luggage                  19.00
+B_amenities_breakfast                11.88
+B_amenities_self_check               14.77
+B_amenities_long_term                29.51</pre>
+
+If it is null we change it to an "f". If it is not for a "t". Let's draw a histogram to see the columns we have obtained by extracting the information from "amenities"
+
+![Image](images/amenities_histogram.png)
+
+### Numerical features
+We will check the numerical columns in search of nulls. Maybe we have to drop some more
+
+>> bathrooms. Max: 16.5. Min: 0.0. NaNs: 10
+bedrooms. Max: 50.0. Min: 0.0. NaNs: 11
+beds. Max: 59.0. Min: 0.0. NaNs: 44
+security_deposit. Max: 4500.0. Min: 0.0. NaNs: 5997
+cleaning_fee. Max: 500.0. Min: 0.0. NaNs: 4320
+review_scores_rating. Max: 100.0. Min: 20.0. NaNs: 3328
+review_scores_accuracy. Max: 10.0. Min: 2.0. NaNs: 3330
+review_scores_cleanliness. Max: 10.0. Min: 2.0. NaNs: 3328
+review_scores_checkin. Max: 10.0. Min: 2.0. NaNs: 3328
+review_scores_communication. Max: 10.0. Min: 2.0. NaNs: 3327
+review_scores_location. Max: 10.0. Min: 2.0. NaNs: 3331
+review_scores_value. Max: 10.0. Min: 2.0. NaNs: 3332
+
+The null values of the columns like "review_scores_*" are due there are ads without reviews. We will categorize them as "no review" and group the rest of the values
+
+<pre>10/10         11795
+9/10           3365
+no reviews     3328
+0-8/10          952</pre>
+
+NaN values for "security_deposit" and "cleaning_fee" will be imputed to 0. With "bathrooms", "bedrooms" and "beds" we could use the relationship between accommodation and the number of beds, bedrooms and bathrooms. If a house can accommodate more people it must also have more beds, bedrooms and bathrooms.
+
+## Answering questions
+* Which areas have the most Airbnb properties, and which are the most expensive?
+
+### Listings number
+These are all Madrid listings:
+![Image](images/mapa1.png)
+<div style="text-align: right"><i>Distribution of Madrid listings. Point color indicates price per guest</i></div>
+
+We group by "neighbourhood_cleansed" and filter the neighbourhoods with 50, 100 and 500 listings or greater:
+![Image](images/mapa2.png)
+![Image](images/mapa3.png)
+![Image](images/mapa4.png)
+
+We can see that the largest number of houses is in the center.
+
+### Price per guest included
+Mean or median? There are listings with a high price and only one guest included, but its "accomodates" is high. Let's use median to soften those anomalies
+![Image](images/mapa5.png)
+
+There are peripheral areas with a high median. Let's filter by min 50$
+![Image](images/mapa6.png)
+<br>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>neighbourhood_cleansed</th>
+      <th>number_of_listings</th>
+      <th>median_price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Castellana</th>
+      <td>168</td>
+      <td>65.0</td>
+    </tr>
+    <tr>
+      <th>Cuatro Vientos</th>
+      <td>7</td>
+      <td>75.0</td>
+    </tr>
+    <tr>
+      <th>El Goloso</th>
+      <td>11</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>El Viso</th>
+      <td>71</td>
+      <td>70.0</td>
+    </tr>
+    <tr>
+      <th>Hispanoamérica</th>
+      <td>100</td>
+      <td>62.0</td>
+    </tr>
+    <tr>
+      <th>Palomas</th>
+      <td>17</td>
+      <td>59.0</td>
+    </tr>
+    <tr>
+      <th>Recoletos</th>
+      <td>274</td>
+      <td>65.0</td>
+    </tr>
+    <tr>
+      <th>Valdemarín</th>
+      <td>5</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>Vallehermoso</th>
+      <td>56</td>
+      <td>54.5</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+The areas with the highest median price are no longer all concentrated in the city center. The "Cuatro Vientos" area is notable, surely there is a high demand due to the air base sited there. However it has little offer, which would explain these high prices.
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>id</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>B_price_guests</th>
+      <th>neighbourhood_cleansed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>20324976</th>
+      <td>40.37025</td>
+      <td>-3.77034</td>
+      <td>75.0</td>
+      <td>Cuatro Vientos</td>
+    </tr>
+    <tr>
+      <th>30261870</th>
+      <td>40.36806</td>
+      <td>-3.76347</td>
+      <td>15.0</td>
+      <td>Cuatro Vientos</td>
+    </tr>
+    <tr>
+      <th>33801693</th>
+      <td>40.37194</td>
+      <td>-3.77140</td>
+      <td>55.0</td>
+      <td>Cuatro Vientos</td>
+    </tr>
+    <tr>
+      <th>35125746</th>
+      <td>40.36734</td>
+      <td>-3.76397</td>
+      <td>17.0</td>
+      <td>Cuatro Vientos</td>
+    </tr>
+    <tr>
+      <th>35157642</th>
+      <td>40.36698</td>
+      <td>-3.76177</td>
+      <td>250.0</td>
+      <td>Cuatro Vientos</td>
+    </tr>
+    <tr>
+      <th>35184131</th>
+      <td>40.36721</td>
+      <td>-3.76252</td>
+      <td>200.0</td>
+      <td>Cuatro Vientos</td>
+    </tr>
+    <tr>
+      <th>36707244</th>
+      <td>40.37160</td>
+      <td>-3.76639</td>
+      <td>100.0</td>
+      <td>Cuatro Vientos</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+## Which amenities increase the price of an Airbnb listing?
+We will draw a barchart for every amenity group to compare number of listings versus median price.
+
+<div>
+<style scoped="">
+    .column {
+      float: left;
+      width: 50%;
+    }
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+</style>
+<div class="row">
+  <div class="column">
+    <img src="images/amenities_price1.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price2.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price3.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price4.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price5.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price6.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price7.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price8.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price9.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price10.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price11.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price12.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price13.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price14.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price15.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price16.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price17.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price18.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price19.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_price20.png" height="100%" width="100%">
+  </div>
+</div>
+
+These are the things that seem to influence (positively) the median price:
+* Normal electronics: DVD player, Printer, TV, Cable TV, Sound system, High-resolution computer monitor
+* Air conditioning: Central air conditioning, Air conditioning
+
+What if only the neighborhoods with the highest number of listings are reviewed?
+
+<div>
+<style scoped="">
+    .column {
+      float: left;
+      width: 50%;
+    }
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+</style>
+<div class="row">
+  <div class="column">
+    <img src="images/amenities_max_price1.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price2.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price3.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price4.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price5.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price6.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price7.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price8.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price9.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price10.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price11.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price12.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price13.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price14.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price15.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price16.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price17.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price18.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price19.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/amenities_max_price20.png" height="100%" width="100%">
+  </div>
+</div>
+
+Others amenities begin to influence the price because these neighborhoods are in the center of the city.
+* Normal electronics: DVD player, Printer, TV, Cable TV, Sound system, High-resolution computer monitor
+* Air conditioning: Central air conditioning, Air conditioning
+* General accesibility (little): Well-lit path to entrance, Elevator
+<br> In the center there are old buildings without an elevator. Maybe for that reason customers look for the house to have an elevator in these neighborhoods
+* Free parking: Free street parking, Free parking on premises
+<br> It's difficult to park the car in the central neighborhoods
+* Privacy: Private living room, Private bathroom, Private entrance, En suite bathroom
+
+## Influence of host features
+We want to analyze how categorical variables related to the host affect the median price. We'll use another histograms
+* 'host_response_time'
+* 'host_response_rate'
+* 'host_is_superhost'
+* 'host_identity_verified'
+
+<div>
+<style scoped="">
+    .column {
+      float: left;
+      width: 50%;
+    }
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+</style>
+<div class="row">
+  <div class="column">
+    <img src="images/host_features1.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/host_features2.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/host_features3.png" height="100%" width="100%">
+  </div>
+  <div class="column">
+      <img src="images/host_features4.png" height="100%" width="100%">
+  </div>
+</div>
+
+**'host_response_time' and 'host_response_rate'**<br>
+The "worst" categories are those with the highest median price. It seems that this feature does not "cause" the price, but is a consequence of the price above the median. The host knows that he has a well-valued property in Air Bnb and does not give such exhaustive attention to potential clients
+
+**'host_is_superhost' and 'host_identity_verified'**<br>
+The definition of 'host_is_superhost', according to [Air Bnb](https://www.airbnb.co.uk/help/article/828/what-is-a-superhost?_set_bev_on_new_domain=1579644646_eBD%2Bqp6saBYIE3Z7) 
+> "Superhosts are experienced hosts who provide a shining example for other hosts, and extraordinary experiences for their guests"
+
+The definition of 'host_identity_verified', according to [Air Bnb](https://www.airbnb.co.uk/help/article/1237/how-does-it-work-when-airbnb-verifies-your-identity?_set_bev_on_new_domain=1579644646_eBD%2Bqp6saBYIE3Z7)
+> At Airbnb, we’re always working on making our community as secure as possible for everyone. That’s why, before booking a home or experience, or becoming a host, we may ask for a government ID or ask you to confirm your legal name and add your address
+
+In both cases there is no effect on the price
