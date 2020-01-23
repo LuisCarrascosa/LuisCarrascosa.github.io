@@ -746,12 +746,12 @@ We want to analyze how categorical variables related to the host affect the medi
 
 **'host_response_time' and 'host_response_rate'**<br>
 The "worst" categories are those with the highest median price. It seems that this feature does not "cause" the price, but is a consequence of the price above the median. The host knows that he has a well-valued property in Air Bnb and does not give such exhaustive attention to potential clients
-
+<br>
 **'host_is_superhost' and 'host_identity_verified'**<br>
 The definition of 'host_is_superhost', according to [Air Bnb](https://www.airbnb.co.uk/help/article/828/what-is-a-superhost?_set_bev_on_new_domain=1579644646_eBD%2Bqp6saBYIE3Z7) 
 > "Superhosts are experienced hosts who provide a shining example for other hosts, and extraordinary experiences for their guests"
-
+<br>
 The definition of 'host_identity_verified', according to [Air Bnb](https://www.airbnb.co.uk/help/article/1237/how-does-it-work-when-airbnb-verifies-your-identity?_set_bev_on_new_domain=1579644646_eBD%2Bqp6saBYIE3Z7)
 > At Airbnb, we’re always working on making our community as secure as possible for everyone. That’s why, before booking a home or experience, or becoming a host, we may ask for a government ID or ask you to confirm your legal name and add your address
-
+<br>
 In both cases there is no effect on the price
