@@ -702,14 +702,12 @@ What if only the neighborhoods with the highest number of listings are reviewed?
   </div>
 </div>
 
-Others amenities begin to influence the price because these neighborhoods are in the center of the city
+Others amenities begin to influence the price because these neighborhoods are in the center of the city<br>
 
 * Normal electronics: DVD player, Printer, TV, Cable TV, Sound system, High-resolution computer monitor
 * Air conditioning: Central air conditioning, Air conditioning
-* General accesibility (little): Well-lit path to entrance, Elevator
-<br> In the center there are old buildings without an elevator. Maybe for that reason customers look for the house to have an elevator in these neighborhoods
-* Free parking: Free street parking, Free parking on premises
-<br> It's difficult to park the car in the central neighborhoods
+* General accesibility (little): Well-lit path to entrance, Elevator. In the center there are old buildings without an elevator. Maybe for that reason customers look for the house to have an elevator in these neighborhoods
+* Free parking: Free street parking, Free parking on premises. It's difficult to park the car in the central neighborhoods
 * Privacy: Private living room, Private bathroom, Private entrance, En suite bathroom
 
 ## Influence of host features
