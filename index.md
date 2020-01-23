@@ -702,7 +702,8 @@ What if only the neighborhoods with the highest number of listings are reviewed?
   </div>
 </div>
 
-Others amenities begin to influence the price because these neighborhoods are in the center of the city.
+Others amenities begin to influence the price because these neighborhoods are in the center of the city
+
 * Normal electronics: DVD player, Printer, TV, Cable TV, Sound system, High-resolution computer monitor
 * Air conditioning: Central air conditioning, Air conditioning
 * General accesibility (little): Well-lit path to entrance, Elevator
