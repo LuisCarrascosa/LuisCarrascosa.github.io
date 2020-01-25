@@ -682,7 +682,7 @@ t: 6261
   <div class="column">
       <img src="images/host_features4.png" height="100%" width="100%">
   </div>
-</div>
+</div></div>
 
 **'host_response_time' and 'host_response_rate'**
 
