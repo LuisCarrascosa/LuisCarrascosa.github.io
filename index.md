@@ -153,222 +153,6 @@ We don't lose the two concentrations near the ids 20M and 35M. Now, let's repres
 Columns with only one category will be deleted: 
 > ['has_availability', 'host_has_profile_pic', 'is_business_travel_ready' ,'require_guest_phone_verification', 'require_guest_profile_picture', 'requires_license']
 
-### Categorical features
-We review the categorical and datetime variables one by one
-> ['experiences_offered', 'host_since', 'host_response_time', 'host_response_rate', 'host_is_superhost', 'host_identity_verified', 'neighbourhood_cleansed', 'market', 'property_type', 'room_type',
- 'bed_type', 'amenities', 'calendar_updated', 'first_review', 'last_review', 'license', 'instant_bookable', 'cancellation_policy']
-
-**experiences_offered:** we erase it because there is only one value
-
-**host_since:** date that the host first joined Airbnb. We will calculate the difference of days and replace the nulls with the median
-
-**host_response_time:** average amount of time the host takes to reply to messages. There is some possible values and nans. This nans we will impute these to a new value: unknown
-> within an hour        11625<br>
-unknown                3498<br>
-within a few hours     2539<br>
-within a day           1382<br>
-a few days or more      408
-
-**host_response_rate:** analogous case but for which we will group in a categorical variable: "unknown", [0-49%], [50-89%], [90-99%] y 100%
-> 100%       10906<br>
-90-99%      2310<br>
-50-89%      2172<br>
-0-49%        566<br>
-unknown     3498
-
-**host_is_superhost:** whether or not the host is a superhost, which is a mark of quality for the top-rated and most experienced hosts. There are only 12 nans. We will review the rest of columns "host_"
-
-![Image](images/table2.png)
-
-"host_is_superhost", "host_listings_count" and "host_identity_verified" has the same nulls. We drop these listings
-
-**host_identity_verified:** whether or not the host has been verified with id. There are no nulls
-
-> f: 13179<br>
-t: 6261
-
-**neighbourhood_cleansed:** There are no nulls
-
-**market:** virtually there is only significant value. We eliminate it
-
-> Madrid: 19406<br>
-Other (International): 4<br>
-Other (Domestic): 1
-
-**property_type:** there are too much property types. We will group them into 3 categories: house, apartment and others.
-
->Apartment: 17909<br>
-House: 1113<br>
-Other: 418
-
-**room_type:** we will group 'Hotel room' into 'Private room'
-
-> Entire home/apt: 12078<br>
-Private room: 7134<br>
-Shared room: 228
-
-**bed_type:** this feature is "Real Bed" in the 99% os dataset. We drop this column
-
-**calendar_updated:** This feature does not add value to the model. Dropped
-
-**license:** it's a license granted by the Community of Madrid. The majority (81%) is null. It's a free text column but we can group them in "t" (has license) and "f" for nans values
-
-> f: 15778<br>
-t: 3662<br>
-
-**instant_bookable:** whether or not the property can be instant booked. It has no null values
-
-> t: 11564<br>
-f: 7876
-
-**cancellation_policy:** whether or not the property can be instant booked. It has no null values but we need to regroup categories
-
-> strict_14_with_grace_period: 7243<br>
-flexible: 6152<br>
-moderate: 6045
-
-**first_review:** there are 15.9% of ads without review. We add a new column "B_time_since_first_review" that we will group in 5 categories:
-
-<pre>
-0-6 months     3652
-6-12 months    2231
-1-2 years      3667
-2+ years       6804
-no reviews     3086
-</pre>
-
-**last_review:** we add a new column "B_time_since_last_review" that we will group in 5 categories:
-
-<pre>0-2 weeks     5758
-2-8 weeks     5199
-2-6 months    2500
-6+ months     2897
-no reviews    3086</pre>
-
-**amenities:** additional features in the property, e.g. whether it has a TV or parking. This data is a list and we need to **extract a list of all posibles amenities**
-
-![Image](images/categorias1.png)
-
-I define the following groupings of amenities:
- > B_amenities_pets: Pets allowed / Other pet / Dog / Cat / Pets live on this property<br>
-B_amenities_kitchen: Kitchen / Kitchenette / Full kitchen<br>
-B_amenities_high_kitchen: Warming drawer / Wine cooler / Steam oven / Double oven<br>
-B_amenities_high_bedroom: Firm mattress / Memory foam mattress / Pillow-top mattress<br>
-B_amenities_outdoor: BBQ grill / Terrace / Outdoor seating / Patio or balcony / Hammock / Garden or backyard / Balcony / Sun loungers<br>
-B_amenities_family_friendly: Family\/kid friendly / Changing table / Baby bath / Crib / Children’s books and toys / Pack ’n Play\/travel crib / Fireplace guards / Babysitter recommendations / Window guards / Children’s dinnerware / Stair gates / Table corner guards / Outlet covers / Baby monitor / High chair<br>
-B_amenities_home_appliances: Washer \/ Dryer / Refrigerator / Mini fridge / Gas oven / Cooking basics / Dryer / Convection oven / Microwave / Washer / Oven / Dishes and silverware / Iron / Dishwasher<br>
-B_amenities_high_electronics: HBO GO / Smart TV / Netflix / Projector and screen / Game console / Amazon Echo<br>
-B_amenities_normal_electronics: DVD player / Printer / TV / Cable TV / Sound system / High-resolution computer monitor<br>
-B_amenities_special_accessibility: Fixed grab bars for shower / Accessible-height bed / Extra space around bed / Pool with pool hoist / Electric profiling bed / Accessible-height toilet / Wide doorway to guest bathroom / Ground floor access / Single level home / Wheelchair accessible / Disabled parking spot / Shower chair / No stairs or steps to enter / Step-free shower / Bathtub with bath chair / Wide entrance / Fixed grab bars for toilet / Wide entrance for guests / Flat path to guest entrance / Mobile hoist / Wide clearance to shower / Wide hallways / Wide entryway<br>
-B_amenities_breakfast_appliances: Espresso machine / Hot water kettle / Coffee maker<br>
-B_amenities_gym: Gym / Exercise equipment<br>
-B_amenities_pool: Shared pool / Pool<br>
-B_amenities_heating: Heated towel rack / Heating / Heated floors / Stove<br>
-B_amenities_other: Other / Essentials / Breakfast table / Beach essentials / Buzzer\/wireless intercom / Formal dining area / Ceiling fan / Day bed / Room-darkening shades / Laptop friendly workspace / Standing valet<br>
-B_amenities_views: Beach view / Ski-in/Ski-out / Waterfront / Beachfront / Beachfront<br>
-B_amenities_internet: Ethernet connection / Wifi / Pocket wifi / Internet<br>
-B_amenities_bathroom_basics: Hot water / Walk-in shower / Bathtu / Soaking tub / Handheld shower head / Bath towel / Bidet / Shampoo / Rain shower / Body soap / toilet / Bathroom essentials / Toilet paper / Hair dryer<br>
-B_amenities_cleaning_before_checkout: Cleaning before checkout<br>
-B_amenities_bedroom_basics: Bedroom comforts / Extra pillows and blankets / Bed linens / Hangers<br>
-B_amenities_security: Lockbox / Lock on bedroom door<br>
-B_amenities_indoor_fireplace: Indoor fireplace<br>
-B_amenities_staff: Building staff / Doorman<br>
-B_amenities_smoking: Smoking allowed<br>
-B_amenities_high_bathroom: Jetted tub / Touchless faucets / Hot tub<br>
-B_amenities_cleaning_before_checkout: Cleaning before checkout<br>    
-B_amenities_proximity_host: Host greets you<br>
-B_amenities_general_accesibility: Well-lit path to entrance / Elevator<br>
-B_amenities_free_parking: Free street parking / Free parking on premises<br>  
-B_amenities_paid_parking: Paid parking on premises / Paid parking off premises<br>
-B_amenities_air_conditioning: Central air conditioning / Air conditioning<br>
-B_amenities_privacy: Private living room / Private bathroom / Private entrance / En suite bathroom<br>
-B_amenities_safety: Fire extinguisher / Carbon monoxide detector / Smoke detector / Safety card / First aid kit<br>
-B_amenities_luggage: Mudroom / Luggage dropoff allowed<br>    
-B_amenities_ev_charger: EV charger<br>     
-B_amenities_breakfast: Breakfast<br>
-B_amenities_self_check: Keypad / 24-hour check-in / Self check-in / Smart lock<br>    
-B_amenities_suitable_events: Suitable for events<br>
-B_amenities_long_term: Long term stays allowed)'
-
-We will build a dataframe with the groups of defined things that we will add to obtain the totals (%) of each group
-
-<pre>B_amenities_pets                     14.88
-B_amenities_outdoor                  15.28
-B_amenities_family_friendly          39.74
-B_amenities_normal_electronics       79.95
-B_amenities_special_accessibility    21.90
-B_amenities_breakfast_appliances     41.92
-B_amenities_bedroom_basics           85.70
-B_amenities_security                 16.91
-B_amenities_smoking                  20.98
-B_amenities_proximity_host           35.32
-B_amenities_general_accesibility     61.44
-B_amenities_free_parking             16.25
-B_amenities_paid_parking             31.90
-B_amenities_air_conditioning         63.65
-B_amenities_privacy                  21.67
-B_amenities_safety                   45.11
-B_amenities_luggage                  19.00
-B_amenities_breakfast                11.88
-B_amenities_self_check               14.77
-B_amenities_long_term                29.51</pre>
-
-We will remove those that offer more than 90% of ads and those that are below 10%
-
-> high_frequent_cols: ['B_amenities_kitchen', 'B_amenities_home_appliances', 'B_amenities_heating', 'B_amenities_other', 'B_amenities_internet', 'B_amenities_bathroom_basics']
-
-> low_frequent_cols: ['B_amenities_high_kitchen', 'B_amenities_high_bedroom', 'B_amenities_high_electronics', 'B_amenities_gym', 'B_amenities_pool', 'B_amenities_views', 'B_amenities_cleaning_before_checkout', 'B_amenities_indoor_fireplace', 'B_amenities_staff', 'B_amenities_high_bathroom', 'B_amenities_ev_charger', 'B_amenities_suitable_events']
-
-<pre>B_amenities_pets                     14.88
-B_amenities_outdoor                  15.28
-B_amenities_family_friendly          39.74
-B_amenities_normal_electronics       79.95
-B_amenities_special_accessibility    21.90
-B_amenities_breakfast_appliances     41.92
-B_amenities_bedroom_basics           85.70
-B_amenities_security                 16.91
-B_amenities_smoking                  20.98
-B_amenities_proximity_host           35.32
-B_amenities_general_accesibility     61.44
-B_amenities_free_parking             16.25
-B_amenities_paid_parking             31.90
-B_amenities_air_conditioning         63.65
-B_amenities_privacy                  21.67
-B_amenities_safety                   45.11
-B_amenities_luggage                  19.00
-B_amenities_breakfast                11.88
-B_amenities_self_check               14.77
-B_amenities_long_term                29.51</pre>
-
-If it is null we change it to an "f". If it is not for a "t". Let's draw a histogram to see the columns we have obtained by extracting the information from "amenities"
-
-![Image](images/amenities_histogram.png)
-
-### Numerical features
-We will check the numerical columns in search of nulls. Maybe we have to drop some more
-
->> bathrooms. Max: 16.5. Min: 0.0. NaNs: 10
-bedrooms. Max: 50.0. Min: 0.0. NaNs: 11
-beds. Max: 59.0. Min: 0.0. NaNs: 44
-security_deposit. Max: 4500.0. Min: 0.0. NaNs: 5997
-cleaning_fee. Max: 500.0. Min: 0.0. NaNs: 4320
-review_scores_rating. Max: 100.0. Min: 20.0. NaNs: 3328
-review_scores_accuracy. Max: 10.0. Min: 2.0. NaNs: 3330
-review_scores_cleanliness. Max: 10.0. Min: 2.0. NaNs: 3328
-review_scores_checkin. Max: 10.0. Min: 2.0. NaNs: 3328
-review_scores_communication. Max: 10.0. Min: 2.0. NaNs: 3327
-review_scores_location. Max: 10.0. Min: 2.0. NaNs: 3331
-review_scores_value. Max: 10.0. Min: 2.0. NaNs: 3332
-
-The null values of the columns like "review_scores_*" are due there are ads without reviews. We will categorize them as "no review" and group the rest of the values
-
-<pre>10/10         11795
-9/10           3365
-no reviews     3328
-0-8/10          952</pre>
-
-NaN values for "security_deposit" and "cleaning_fee" will be imputed to 0. With "bathrooms", "bedrooms" and "beds" we could use the relationship between accommodation and the number of beds, bedrooms and bathrooms. If a house can accommodate more people it must also have more beds, bedrooms and bathrooms.
-
 ## Answering questions
 * Which areas have the most Airbnb properties, and which are the most expensive?
 
@@ -542,9 +326,126 @@ The areas with the highest median price are no longer all concentrated in the ci
   </tbody>
 </table>
 </div>
+<br>
 
 ## Which amenities increase the price of an Airbnb listing?
 We will draw a barchart for every amenity group to compare number of listings versus median price.
+
+**amenities:** additional features in the property, e.g. whether it has a TV or parking. This data is a list and we need to **extract a list of all posibles amenities**
+
+<br>
+
+![Image](images/categorias1.png)
+
+<br>
+
+I define the following groupings of amenities:
+> B_amenities_pets: Pets allowed / Other pet / Dog / Cat / Pets live on this property
+> 
+> B_amenities_kitchen: Kitchen / Kitchenette / Full kitchen
+> 
+> B_amenities_high_kitchen: Warming drawer / Wine cooler / Steam oven / Double oven
+> 
+> B_amenities_high_bedroom: Firm mattress / Memory foam mattress / Pillow-top mattress
+> 
+> B_amenities_outdoor: BBQ grill / Terrace / Outdoor seating / Patio or balcony / Hammock / Garden or backyard / Balcony / Sun loungers
+> 
+> B_amenities_family_friendly: Family\/kid friendly / Changing table / Baby bath / Crib / Children’s books and toys / Pack ’n Play\/travel crib / Fireplace guards / Babysitter recommendations / Window guards / Children’s dinnerware / Stair gates / Table corner guards / Outlet covers / Baby monitor / High chair
+> 
+> B_amenities_home_appliances: Washer \/ Dryer / Refrigerator / Mini fridge / Gas oven / Cooking basics / Dryer / Convection oven / Microwave / Washer / Oven / Dishes and silverware / Iron / Dishwasher
+> 
+> B_amenities_high_electronics: HBO GO / Smart TV / Netflix / Projector and screen / Game console / Amazon Echo
+> 
+> B_amenities_normal_electronics: DVD player / Printer / TV / Cable TV / Sound system / High-resolution computer monitor
+> 
+> B_amenities_special_accessibility: Fixed grab bars for shower / Accessible-height bed / Extra space around bed / Pool with pool hoist / Electric profiling bed / Accessible-height toilet / Wide doorway to guest bathroom / Ground floor access / Single level home / Wheelchair accessible / Disabled parking spot / Shower chair / No stairs or steps to enter / Step-free shower / Bathtub with bath chair / Wide entrance / Fixed grab bars for toilet / Wide entrance for guests / Flat path to guest entrance / Mobile hoist / Wide clearance to shower / Wide hallways / Wide entryway
+> 
+> B_amenities_breakfast_appliances: Espresso machine / Hot water kettle / Coffee maker
+> 
+> B_amenities_gym: Gym / Exercise equipment
+> 
+> B_amenities_pool: Shared pool / Pool
+> 
+> B_amenities_heating: Heated towel rack / Heating / Heated floors / Stove
+> 
+> B_amenities_other: Other / Essentials / Breakfast table / Beach essentials / Buzzer\/wireless intercom / Formal dining area / Ceiling fan / Day bed / Room-darkening shades / Laptop friendly workspace / Standing valet
+>  
+> B_amenities_views: Beach view / Ski-in/Ski-out / Waterfront / Beachfront / Beachfront
+> 
+> B_amenities_internet: Ethernet connection / Wifi / Pocket wifi / Internet
+> 
+> B_amenities_bathroom_basics: Hot water / Walk-in shower / Bathtu / Soaking tub / Handheld shower head / Bath towel / Bidet / Shampoo / Rain shower / Body soap / toilet / Bathroom essentials / Toilet paper / Hair dryer
+> 
+> B_amenities_cleaning_before_checkout: Cleaning before checkout
+> 
+> B_amenities_bedroom_basics: Bedroom comforts / Extra pillows and blankets / Bed linens / Hangers
+> 
+> B_amenities_security: Lockbox / Lock on bedroom door
+> 
+> B_amenities_indoor_fireplace: Indoor fireplace
+> 
+> B_amenities_staff: Building staff / Doorman
+> 
+> B_amenities_smoking: Smoking allowed
+> 
+> B_amenities_high_bathroom: Jetted tub / Touchless faucets / Hot tub
+>    
+> B_amenities_proximity_host: Host greets you
+> 
+> B_amenities_general_accesibility: Well-lit path to entrance / Elevator
+> 
+> B_amenities_free_parking: Free street parking / Free parking on premises
+>   
+> B_amenities_paid_parking: Paid parking on premises / Paid parking off premises
+> 
+> B_amenities_air_conditioning: Central air conditioning / Air conditioning
+> 
+> B_amenities_privacy: Private living room / Private bathroom / Private entrance / En suite bathroom
+> 
+> B_amenities_safety: Fire extinguisher / Carbon monoxide detector / Smoke detector / Safety card / First aid kit
+> 
+> B_amenities_luggage: Mudroom / Luggage dropoff allowed
+>     
+> B_amenities_ev_charger: EV charger
+>      
+> B_amenities_breakfast: Breakfast
+> 
+> B_amenities_self_check: Keypad / 24-hour check-in / Self check-in / Smart lock
+>   
+> B_amenities_suitable_events: Suitable for events
+> 
+> B_amenities_long_term: Long term stays allowed
+
+We will build a dataframe with the groups of defined amenities that we will add to obtain the totals (%) of each group. We will remove those that offer more than 90% of ads and those that are below 10%
+
+> high_frequent_cols: ['B_amenities_kitchen', 'B_amenities_home_appliances', 'B_amenities_heating', 'B_amenities_other', 'B_amenities_internet', 'B_amenities_bathroom_basics']
+
+> low_frequent_cols: ['B_amenities_high_kitchen', 'B_amenities_high_bedroom', 'B_amenities_high_electronics', 'B_amenities_gym', 'B_amenities_pool', 'B_amenities_views', 'B_amenities_cleaning_before_checkout', 'B_amenities_indoor_fireplace', 'B_amenities_staff', 'B_amenities_high_bathroom', 'B_amenities_ev_charger', 'B_amenities_suitable_events']
+
+<pre>B_amenities_pets                     14.88
+B_amenities_outdoor                  15.28
+B_amenities_family_friendly          39.74
+B_amenities_normal_electronics       79.95
+B_amenities_special_accessibility    21.90
+B_amenities_breakfast_appliances     41.92
+B_amenities_bedroom_basics           85.70
+B_amenities_security                 16.91
+B_amenities_smoking                  20.98
+B_amenities_proximity_host           35.32
+B_amenities_general_accesibility     61.44
+B_amenities_free_parking             16.25
+B_amenities_paid_parking             31.90
+B_amenities_air_conditioning         63.65
+B_amenities_privacy                  21.67
+B_amenities_safety                   45.11
+B_amenities_luggage                  19.00
+B_amenities_breakfast                11.88
+B_amenities_self_check               14.77
+B_amenities_long_term                29.51</pre>
+
+If it is null we change it to an "f". If it is not for a "t". Let's draw a histogram to see the columns we have obtained by extracting the information from "amenities"
+
+![Image](images/amenities_histogram.png)
 
 <div>
 <style scoped="">
@@ -621,11 +522,13 @@ We will draw a barchart for every amenity group to compare number of listings ve
   </div>
 </div>
 
+
 These are the things that seem to influence (positively) the median price:
 * Normal electronics: DVD player, Printer, TV, Cable TV, Sound system, High-resolution computer monitor
 * Air conditioning: Central air conditioning, Air conditioning
 
 What if only the neighborhoods with the highest number of listings are reviewed?
+
 
 <div>
 <style scoped="">
@@ -717,6 +620,39 @@ We want to analyze how categorical variables related to the host affect the medi
 * 'host_is_superhost'
 * 'host_identity_verified'
 
+**host_response_time:** average amount of time the host takes to reply to messages. There is some possible values and nans. This nans we will impute these to a new value: unknown
+
+<pre>
+within an hour        11625
+within a few hours     2539
+within a day           1382
+a few days or more      408
+unknown                3498 
+</pre>
+
+**host_response_rate:** analogous case but for which we will group in a categorical variable: "unknown", [0-49%], [50-89%], [90-99%] y 100%
+
+<pre>
+100%       10906
+90-99%      2310
+50-89%      2172
+0-49%        566
+unknown     3498
+</pre>
+
+**host_is_superhost:** whether or not the host is a superhost, which is a mark of quality for the top-rated and most experienced hosts. There are only 12 nans. We will review the rest of columns "host_"
+
+![Image](images/table2.png)
+
+"host_is_superhost", "host_listings_count" and "host_identity_verified" has the same nulls. We drop these listings
+
+**host_identity_verified:** whether or not the host has been verified with id. There are no nulls
+
+<pre>
+f: 13179
+t: 6261
+</pre>
+
 <div>
 <style scoped="">
     .column {
@@ -744,14 +680,19 @@ We want to analyze how categorical variables related to the host affect the medi
   </div>
 </div>
 
-**'host_response_time' and 'host_response_rate'**<br>
+**'host_response_time' and 'host_response_rate'**
+
 The "worst" categories are those with the highest median price. It seems that this feature does not "cause" the price, but is a consequence of the price above the median. The host knows that he has a well-valued property in Air Bnb and does not give such exhaustive attention to potential clients
-<br>
-**'host_is_superhost' and 'host_identity_verified'**<br>
+
+**'host_is_superhost' and 'host_identity_verified'**
+
 The definition of 'host_is_superhost', according to [Air Bnb](https://www.airbnb.co.uk/help/article/828/what-is-a-superhost?_set_bev_on_new_domain=1579644646_eBD%2Bqp6saBYIE3Z7) 
-> "Superhosts are experienced hosts who provide a shining example for other hosts, and extraordinary experiences for their guests"
-<br>
+
+> "Superhosts are experienced hosts who provide a shining example for other hosts and extraordinary experiences for their guests"
+
+
 The definition of 'host_identity_verified', according to [Air Bnb](https://www.airbnb.co.uk/help/article/1237/how-does-it-work-when-airbnb-verifies-your-identity?_set_bev_on_new_domain=1579644646_eBD%2Bqp6saBYIE3Z7)
+
 > At Airbnb, we’re always working on making our community as secure as possible for everyone. That’s why, before booking a home or experience, or becoming a host, we may ask for a government ID or ask you to confirm your legal name and add your address
-<br>
+
 In both cases there is no effect on the price
