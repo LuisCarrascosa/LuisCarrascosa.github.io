@@ -524,6 +524,7 @@ If it is null we change it to an "f". If it is not for a "t". Let's draw a histo
 
 
 These are the things that seem to influence (positively) the median price:
+
 * Normal electronics: DVD player, Printer, TV, Cable TV, Sound system, High-resolution computer monitor
 * Air conditioning: Central air conditioning, Air conditioning
 
