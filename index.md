@@ -447,6 +447,8 @@ If it is null we change it to an "f". If it is not for a "t". Let's draw a histo
 
 ![Image](images/amenities_histogram.png)
 
+And now the distribution of amenities in the listings versus the average price
+
 <div>
 <style scoped="">
     .column {
@@ -521,14 +523,14 @@ If it is null we change it to an "f". If it is not for a "t". Let's draw a histo
       <img src="images/amenities_price20.png" height="100%" width="100%">
   </div>
 </div>
-
+</div>
 
 These are the things that seem to influence (positively) the median price:
 
 * Normal electronics: DVD player, Printer, TV, Cable TV, Sound system, High-resolution computer monitor
 * Air conditioning: Central air conditioning, Air conditioning
 
-What if only the neighborhoods with the highest number of listings are reviewed?
+**What if only the neighborhoods with the highest number of listings are reviewed?**
 
 
 <div>
@@ -604,6 +606,7 @@ What if only the neighborhoods with the highest number of listings are reviewed?
   <div class="column">
       <img src="images/amenities_max_price20.png" height="100%" width="100%">
   </div>
+</div>
 </div>
 
 Others amenities begin to influence the price because these neighborhoods are in the center of the city<br>
